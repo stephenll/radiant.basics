@@ -42,7 +42,7 @@ cross_tabs <- function(dataset, var1, var2, tab = NULL, data_filter = "") {
     # http://stats.stackexchange.com/questions/14226/given-the-power-of-computers-these-days-is-there-ever-a-reason-to-do-a-chi-squa/14230#14230
     # http://stats.stackexchange.com/questions/62445/rules-to-apply-monte-carlo-simulation-of-p-values-for-chi-squared-test
 
-    if (any(summarise_all(dataset, funs(does_vary)) == FALSE)) {
+    if (any(summarise_all(dataset, does_vary) == FALSE)) {
       return("One or more selected variables show no variation. Please select other variables." %>%
         add_class("cross_tabs"))
     }
@@ -95,7 +95,7 @@ summary.cross_tabs <- function(object, check = "", dec = 2, ...) {
   if (is.character(object)) return(object)
   cat("Cross-tabs\n")
   cat("Data     :", object$df_name, "\n")
-  if (object$data_filter %>% gsub("\\s", "", .) != "") {
+  if (!is_empty(object$data_filter)) {
     cat("Filter   :", gsub("\\n", "", object$data_filter), "\n")
   }
   cat("Variables:", paste0(c(object$var1, object$var2), collapse = ", "), "\n")

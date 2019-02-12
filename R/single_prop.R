@@ -29,7 +29,7 @@ single_prop <- function(
 
   df_name <- if (is_string(dataset)) dataset else deparse(substitute(dataset))
   dataset <- get_data(dataset, var, filt = data_filter, na.rm = FALSE) %>%
-    mutate_all(funs(as.factor))
+    mutate_all(as.factor)
 
   ## removing any missing values
   miss <- n_missing(dataset)
@@ -104,7 +104,7 @@ summary.single_prop <- function(object, dec = 3, ...) {
     cat("Single proportion test (binomial exact)\n")
   }
   cat("Data      :", object$df_name, "\n")
-  if (object$data_filter %>% gsub("\\s", "", .) != "") {
+  if (!is_empty(object$data_filter)) {
     cat("Filter    :", gsub("\\n", "", object$data_filter), "\n")
   }
   cat("Variable  :", object$var, "\n")
